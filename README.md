@@ -7,21 +7,26 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-# laravel-many-to-many
+# laravel API
 
-continuiamo a lavorare sul codice dei giorni scorsi, ma in una nuova repo e aggiungiamo una nuova entità Technology. Questa entità rappresenta le tecnologie utilizzate ed è in relazione many to many con i progetti. <br>
+continuiamo a lavorare sul codice dei giorni scorsi, ma in una nuova repo. <br>
+L’esercizio di oggi è suddiviso in milestone ed è importante che ne seguiate l’ordine. <br>
 
-Descrizione: <br>
+## Milestone 1
+Aggiungiamo al nostro progetto Laravel una nuovo Api/ProjectController. Questo controller risponderà a delle richieste via API e si occuperà di restituire la lista dei progetti presenti nel database in formato json.
 
-I task da svolgere sono diversi, ma alcuni di essi sono un ripasso di ciò che abbiamo fatto nelle lezioni dei giorni scorsi: <br>
-- creare la migration per la tabella technologies
-- creare il model Technology
-- creare la migration per la tabella pivot project_technology
-- aggiungere ai model Technology e Project i metodi per definire la relazione many to many
-- visualizzare nella pagina di dettaglio di un progetto le tecnologie utilizzate, se presenti
-- permettere all’utente di associare le tecnologie nella pagina di creazione e modifica di un progetto
-- gestire il salvataggio dell’associazione progetto-tecnologie con opportune regole di validazione
 
-## Bonus :
-creare il seeder per il model Technology. <br>
-aggiungere le operazioni CRUD per il model Technology, in modo da gestire le tecnologie utilizzate nei progetti direttamente dal pannello di amministrazione. <br>
+## Milestone 2
+Testiamo la chiamata API tramite browser e assicuriamoci di ricevere i dati correttamente.
+
+
+## Milestone 3
+Progettiamo il nostro front-office (aiutandoci con figma) per farci un'idea di quali end-point API avremo bisogno
+
+
+## Bonus
+se volete preparate una nuova repo (nome repo: vite-boolfolio). <br>
+e iniziamo ad occuparci della parte front-office della nostra applicazione facendo qualche test: creiamo un nuovo progetto Vue 3 con Vite e installiamo axios. <br>
+Colleghiamo questo progetto alla repo separata creata. <br>
+Nel componente principale della nostra Vue App facciamo una chiamata API all’endpoint costruito nel progetto Laravel (milestone 1) e recuperiamo tutti i progetti dal nostro back-end. <br>
+Stampiamo in console i risultati e verifichiamo di ricevere i dati correttamente. <br>
