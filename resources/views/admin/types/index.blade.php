@@ -29,9 +29,9 @@
                         </th>
                         <td>{{ $type->name }}</td>
                         <td>
-                            <a class="btn border" href="{{ route('admin.types.show', $type->id) }}"><i
+                            <a class="btn border" href="{{ route('admin.types.show', $type->slug) }}"><i
                                     class="fa-solid fa-circle-info"></i></a>
-                            <a class="btn border" href="{{ route('admin.types.edit', $type->id) }}"><i
+                            <a class="btn border" href="{{ route('admin.types.edit', $type->slug) }}"><i
                                     class="fa-solid fa-pencil"></i></a>
                             <form class="d-inline" action="{{ route('admin.types.destroy', $type->id) }}" method="POST">
                                 @csrf

@@ -5,6 +5,8 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Project;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class ProjectSeeder extends Seeder
 {
@@ -15,13 +17,24 @@ class ProjectSeeder extends Seeder
     {
         $projects = config('db.projects');
         foreach ($projects as $project) {
-            $newPost = new Project();
-            $newPost->user_id = 1;
-            $newPost->image = $project['image'];
-            $newPost->thumb = $project['thumb'];
-            $newPost->title = $project['title'];
-            $newPost->description = $project['description'];
-            $newPost->save();
+            $newProject = new Project();
+            $newProject->user_id = 1;
+            $newProject->image = $project['image'];
+            $newProject->thumb = $project['thumb'];
+            $newProject->title = $project['title'];
+            $newProject->slug = Str::slug($project['title'], '-');
+            $newProject->description = $project['description'];
+            $newProject->save();
         }
+    }
+
+    public static function storeimage($img, $name)
+    {
+        $url = $img;
+        $contents = file_get_contents($url);
+        $name = Str::slug($name, '-') . '.jpg';
+        $path = 'images/' . $name;
+        Storage::put('images/' . $name, $contents);
+        return $path;
     }
 }

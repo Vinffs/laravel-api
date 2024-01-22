@@ -34,9 +34,9 @@
                         <td>{{ $project->title }}</td>
                         <td>{{ $project->description }}</td>
                         <td>
-                            <a class="btn border" href="{{ route('admin.projects.show', $project->id) }}"><i
+                            <a class="btn border" href="{{ route('admin.projects.show', $project->slug) }}"><i
                                     class="fa-solid fa-circle-info"></i></a>
-                            <a class="btn border" href="{{ route('admin.projects.edit', $project->id) }}"><i
+                            <a class="btn border" href="{{ route('admin.projects.edit', $project->slug) }}"><i
                                     class="fa-solid fa-pencil"></i></a>
                             <form class="d-inline" action="{{ route('admin.projects.destroy', $project->id) }}"
                                 method="POST">

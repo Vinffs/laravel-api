@@ -10,6 +10,7 @@ use App\Models\Type;
 use App\Http\Controllers\Controller;
 use App\Models\Technology;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 class ProjectController extends Controller
 {
@@ -38,6 +39,15 @@ class ProjectController extends Controller
     public function store(StoreProjectRequest $request)
     {
         $formData = $request->validated();
+
+        $slug = Project::getSlug($formData['title']);
+
+        $formData['slug'] = $slug;
+
+        $userId = Auth::id();
+
+        $formData['user_id'] = $userId;
+
         if ($request->hasFile('thumb')) {
             $thumb_path = Storage::put('uploads', $formData['thumb']);
             $formData['thumb'] = $thumb_path;
@@ -48,7 +58,7 @@ class ProjectController extends Controller
             $newProject->technologies()->attach($request->technologies);
         }
 
-        return redirect()->route('admin.projects.show', $newProject->id);
+        return redirect()->route('admin.projects.show', $newProject->slug);
     }
 
     /**
@@ -56,7 +66,11 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
-        return view('admin.projects.show', compact('project'));
+        $currentUserId = Auth::id();
+        if ($currentUserId == $project->user_id || $currentUserId == 1) {
+            return view('admin.projects.show', compact('project'));
+        }
+        abort(403);
     }
 
 
@@ -65,6 +79,11 @@ class ProjectController extends Controller
      */
     public function edit(Project $project)
     {
+
+        $currentUserId = Auth::id();
+        if ($currentUserId != $project->user_id && $currentUserId != 1) {
+            abort(403);
+        }
         $types = Type::all();
         $technologies = Technology::all();
         return view('admin.projects.edit', compact('project', 'types', 'technologies'));
@@ -75,7 +94,21 @@ class ProjectController extends Controller
      */
     public function update(UpdateProjectRequest $request, Project $project)
     {
+        $currentUserId = Auth::id();
+        if ($currentUserId != $project->user_id && $currentUserId != 1) {
+            abort(403);
+        }
         $formData = $request->validated();
+
+        $formData['slug'] = $project->slug;
+        if ($project->title !== $formData['title']) {
+            //CREATE SLUG
+            $slug = Project::getSlug($formData['title']);
+            $formData['slug'] = $slug;
+        }
+
+        $formData['user_id'] = $project->user_id;
+
         if ($request->hasFile('thumb')) {
             if (Storage::exists($project->thumb)) {
                 Storage::delete($project->thumb);
@@ -89,7 +122,7 @@ class ProjectController extends Controller
         } else {
             $project->technologies()->detach();
         }
-        return redirect()->route('admin.projects.show', $project->id);
+        return redirect()->route('admin.projects.show', $project->slug);
     }
 
     /**
@@ -97,7 +130,13 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
-        $project->technologies()->detach();
+        $currentUserId = Auth::id();
+        if ($currentUserId != $project->user_id && $currentUserId != 1) {
+            abort(403);
+        }
+        if ($project->thumb) {
+            Storage::delete($project->thumb);
+        }
         $project->$project->delete();
         return to_route('admin.projects.index')->with('message', "Project {{$project->title}} deleted successfully");
     }

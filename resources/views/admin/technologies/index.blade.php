@@ -14,10 +14,7 @@
                         <h6 class="text-start text-dark-emphasis">Language/Framework</h6>
                     </th>
                     <th scope="col">
-                        <h6 class="text-dark-emphasis">Project Name</h6>
-                    </th>
-                    <th scope="col">
-                        <h6 class="text-dark-emphasis">Description</h6>
+                        <h6 class="text-dark-emphasis">Language Name</h6>
                     </th>
                     <th scope="col">
                         <h6 class="text-dark-emphasis">Actions</h6>
@@ -29,15 +26,13 @@
                     <tr class="text-center no-display">
                         <th scope="row" class="text-start fw-normal">
                             <img class="avatar" width="30" height="30"
-                                src="{{ Vite::asset("public/img/$technology->image.svg") }}"
-                                alt="{{ $technology->image }}" />
+                                src="{{ Vite::asset("public/img/$technology->slug.svg") }}" alt="{{ $technology->name }}" />
                         </th>
-                        <td>{{ $technology->title }}</td>
-                        <td>{{ $technology->description }}</td>
+                        <td>{{ $technology->name }}</td>
                         <td>
-                            <a class="btn border" href="{{ route('admin.technologies.show', $technology->id) }}"><i
+                            <a class="btn border" href="{{ route('admin.technologies.show', $technology->slug) }}"><i
                                     class="fa-solid fa-circle-info"></i></a>
-                            <a class="btn border" href="{{ route('admin.technologies.edit', $technology->id) }}"><i
+                            <a class="btn border" href="{{ route('admin.technologies.edit', $technology->slug) }}"><i
                                     class="fa-solid fa-pencil"></i></a>
                             <form class="d-inline" action="{{ route('admin.technologies.destroy', $technology->id) }}"
                                 method="POST">

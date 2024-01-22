@@ -1,82 +1,24 @@
 @extends('layouts.app')
-
-@section('title', 'Edit Project')
-
 @section('content')
-    <main>
-        <section class="container">
-            <div class="d-flex justify-content-between align-items-center">
-                <h1>Edit {{ $technology->title }}</h1>
-                <a href="{{ route('admin.technologies.index') }}" class="btn btn-danger">Return</a>
+    <section class="container">
+        <h1>Edit {{ $technology->name }}</h1>
+        <form action="{{ route('admin.technologies.update', $technology->slug) }}" method="POST">
+            @csrf
+            @method('PUT')
+            <div class="mb-3">
+                <label for="name">Name</label>
+                <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" id="name"
+                    required minlength="3" maxlength="200" value="{{ old('name', $technology->name) }}">
+                @error('name')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
             </div>
 
-            <div class="row gy-4">
-                <div class="col-12">
-                    <div class="card">
-                        <form action="{{ route('admin.technologies.update', $technology->id) }}" method="POST"
-                            enctype="multipart/form-data">
-                            @csrf
-                            @method('PUT')
-                            <div class="mb-3 mx-3">
-                                <label for="image" class="form-label">Primary Language or Framework:</label>
-                                <input type="text" class="form-control @error('image') is-invalid @enderror"
-                                    id="image" name="image" placeholder="insert image url"
-                                    value="{{ old('image', $technology->image) }}">
-                            </div>
-                            @error('image')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                            <div class="mb-3 mx-3">
-                                <label for="thumb" class="form-label">Choose an Image:</label>
-                                <input type="file" class="form-control @error('thumb') is-invalid @enderror"
-                                    id="thumb" name="thumb" placeholder="insert thumb url"
-                                    value="{{ old('thumb') }}">
-                            </div>
-                            @error('thumb')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                            <div class="mb-3 mx-3">
-                                <label for="title" class="form-label">Title:</label>
-                                <input type="text" value="{{ old('title', $technology->title) }}"
-                                    class="form-control @error('title') is-invalid @enderror" id="title" name="title"
-                                    placeholder="insert title" required maxlength="200" minlength="3">
-                            </div>
-                            @error('title')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                            <div class="mb-3 mx-3">
-                                <label for="type_id" class="form-label">Select Type:</label>
-                                <select name="type_id" id="type_id"
-                                    class="form-control @error('type_id') is-invalid @enderror">
-                                    <option value="">Select a Type</option>
-                                    @foreach ($types as $type)
-                                        <option value="{{ $type->id }}"
-                                            {{ old('type_id', $technology->type_id) == $type->id ? 'selected' : '' }}>
-                                            {{ $type->name }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="mb-3 mx-3">
-                                <label for="description" class="form-label">description:</label>
-                                <textarea name="description" id="description" cols="30" rows="10"
-                                    class="form-control @error('description') is-invalid @enderror">
-                                    {{ old('description', $technology->description) }}
-                                </textarea>
-                            </div>
-                            @error('body')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                            <div class="mb-3 mx-3">
-                                <button type="submit" class="btn btn-primary">Save</button>
-                                <button type="reset" class="btn btn-secondary">Reset</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
+            <div class="mt-3">
+                <button type="submit" class="btn btn-success">Save</button>
+                <button type="reset" class="btn btn-primary">Reset</button>
             </div>
-        </section>
 
-    </main>
-
+        </form>
+    </section>
 @endsection
