@@ -17,12 +17,14 @@ class ProjectController extends Controller
         ]);
     }
 
-    public function show($id)
+    public function show($slug)
     {
-        $project = Project::find($id);
-        return response()->json([
-            'success' => true,
-            'results' => $project
-        ]);
+        $project = Project::where('slug', $slug)->with(['category', 'tags'])->first();
+        return response()->json(
+            [
+                'success' => true,
+                'results' => $project
+            ]
+        );
     }
 }
